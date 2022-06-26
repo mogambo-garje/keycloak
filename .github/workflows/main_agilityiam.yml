@@ -19,7 +19,16 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
-          java-version: '11'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -40,5 +49,5 @@ jobs:
         with:
           app-name: 'agilityiam'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B68C6487597D49C9974669930E3F81F7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C3CF6204364044CFA36496FE8F65DDE5 }}
           package: '*.jar'
